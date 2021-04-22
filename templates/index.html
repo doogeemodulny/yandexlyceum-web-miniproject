@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Это стена, здесь можно писать все что угодно</h2>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {% if current_user.is_authenticated %}
+    <p>
+        {{ form.text.label }}<br>
+        {{ form.text(class="form-control") }}<br>
+        {% for error in form.text.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+    {% else %}
+    <p>
+        <a href="/login">Войдите</a> или <a href="/register">зарегистрируйтесь</a> чтобы оставить запись
+    </p>
+    {% endif %}
+</form>
+{% for item in notes|reverse %}
+<div class="col-md6 border rounded">
+    <div>
+        <strong>{{item.user.name}}</strong>,  {{item.created_date}}
+    </div>
+    <div  class="text-break" style="margin-left: 10px; margin-right: 10px">
+        {{item.content}}
+    </div>
+</div>
+<br/>
+{% else %}
+<p> Здесь пока ничего нет (будет картиночка во весь экран)</p>
+{% endfor %}
+{% endblock %}
